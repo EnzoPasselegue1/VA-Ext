@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>VA Tracker</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <!-- Screen 1: list of series -->
+  <section id="home">
+    <header>
+      <div class="brand">
+        <img class="logo" src="icons/icon128.png" alt="">
+        <h1>Mes animes</h1>
+        <a class="site-link" href="https://voir-anime.to/" target="_blank" title="Ouvrir voir-anime.to">voir-anime.to<span data-icon="external-link" data-size="12"></span></a>
+        <button id="open-stats" class="icon-btn brand-btn" title="Récap"><span data-icon="chart-column" data-size="17"></span></button>
+      </div>
+      <div class="tabs">
+        <button data-tab="progress" class="active">En cours</button>
+        <button data-tab="finished">Finis</button>
+      </div>
+      <label class="search">
+        <span data-icon="search" data-size="15"></span>
+        <input id="search" type="search" placeholder="Rechercher un anime…">
+      </label>
+      <div id="filters" class="chips" hidden></div>
+    </header>
+
+    <main id="list"></main>
+
+    <footer>
+      <button id="export" class="ghost"><span data-icon="download" data-size="14"></span>Exporter</button>
+      <label class="ghost"><span data-icon="upload" data-size="14"></span>Importer<input id="import" type="file" accept="application/json" hidden></label>
+    </footer>
+  </section>
+
+  <!-- Screen 2: one series and its watched episodes -->
+  <section id="detail" hidden>
+    <header class="detail-bar">
+      <button id="back" class="icon-btn" title="Retour"><span data-icon="arrow-left" data-size="18"></span></button>
+      <span>Mes animes</span>
+    </header>
+    <main id="detail-body"></main>
+  </section>
+
+  <!-- Screen 3: recap / stats -->
+  <section id="stats" hidden>
+    <header class="detail-bar">
+      <button id="stats-back" class="icon-btn" title="Retour"><span data-icon="arrow-left" data-size="18"></span></button>
+      <span>Récap</span>
+    </header>
+    <main id="stats-body"></main>
+  </section>
+
+  <script src="icons.js"></script>
+  <script src="storage.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
