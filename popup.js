@@ -61,7 +61,7 @@ async function renderHome() {
             ? "Aucun anime dans ce filtre."
             : tab === "finished"
               ? "Aucun anime terminé pour l'instant."
-              : "Ouvre un épisode sur voir-anime.to pour commencer."
+              : "Ouvre un épisode sur voiranime.cx pour commencer."
       )
     );
     return;
@@ -333,7 +333,7 @@ function stats(animes) {
   root.append(tiles);
 
   if (!animes.length) {
-    root.append(empty("popcorn", "Ouvre un épisode sur voir-anime.to pour commencer."));
+    root.append(empty("popcorn", "Ouvre un épisode sur voiranime.cx pour commencer."));
     return root;
   }
 
