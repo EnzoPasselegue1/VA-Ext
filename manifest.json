@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
   "name": "VA Tracker",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwLqzAdaEc+mospRrs49zqcMVtWJd6ASq8/+6POUdkuunxEOwwcXXzQk85oucMvB5gdaM70SclxQou5EHhzNkrTUYw8xhThEv6cO5sL7tTj9oPpN+uC0KksJNMGTIFLUUsjtivSw3gthEt48VOMox4kgnYJH7OkwJ2Jn8qVCDUbKNm0jn/MLoWMxyzEzfxh92zkpNye9Pg44hWeAWYzhoePb6lorggdTeKRFu0eik+j+vyGhmfeZRvO+0KeQLzh7/TaN5s6RERNTMaFIT0l+5QnD8qwgeoXL/I0vj1KzbeA4Jv09Xa7JORWKzv9Q1qXoowddcbUqzSHlMsmqGLwfLiQIDAQAB",
-  "description": "Garde le fil des épisodes d'anime regardés sur voir-anime.to",
+  "description": "Garde le fil des épisodes d'anime regardés sur voiranime.cx",
   "permissions": ["storage"],
   "action": {
     "default_popup": "popup.html",
@@ -20,7 +20,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://voir-anime.to/anime/*", "https://*.voir-anime.to/anime/*"],
+      "matches": ["https://voiranime.cx/anime/*", "https://*.voiranime.cx/anime/*"],
       "js": ["icons.js", "storage.js", "content.js"],
       "run_at": "document_idle"
     }

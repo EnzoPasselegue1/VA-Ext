@@ -1,4 +1,4 @@
-// Runs on voir-anime.to episode pages: /anime/<anime-slug>/<episode-slug>/
+// Runs on voiranime.cx episode pages: /anime/<anime-slug>/<episode-slug>/
 // On arrival, asks whether the previously opened episode of this anime was finished.
 
 (async () => {

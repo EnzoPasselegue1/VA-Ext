@@ -17,7 +17,15 @@
 // The synced copy is the reference; local adds the extras it doesn't carry.
 // If a sync write fails (quota), the local record is flagged "unsynced" and kept.
 
-const ORIGIN = "https://voir-anime.to";
+const ORIGIN = "https://voiranime.cx";
+// Former domains: links saved under these are rewritten to ORIGIN when read or written.
+const OLD_ORIGINS = ["https://voir-anime.to"];
+
+const rebase = (u) => {
+  if (!u) return u;
+  for (const o of OLD_ORIGINS) if (u.startsWith(o)) return ORIGIN + u.slice(o.length);
+  return u;
+};
 
 const VA = {
   key(slug) {
@@ -40,8 +48,18 @@ const VA = {
   // Synced copy + local extras, unless the local one is newer and failed to sync.
   // null when only a local copy remains without "unsynced": deleted on another computer.
   pick(slug, synced, local) {
-    if (local && local.unsynced && (!synced || local.updatedAt >= synced.u)) return local;
+    if (local && local.unsynced && (!synced || local.updatedAt >= synced.u)) return VA.rebaseLocal(local);
     return synced ? VA.merge(slug, synced, local) : null;
+  },
+
+  // Local-only record (sync failed): same shape, with former-domain links rewritten.
+  rebaseLocal(a) {
+    const watched = {};
+    for (const [n, w] of Object.entries(a.watched || {})) {
+      watched[n] = { ...w, url: rebase(w.url), nextUrl: rebase(w.nextUrl) };
+    }
+    const lv = a.lastVisited && { ...a.lastVisited, url: rebase(a.lastVisited.url), nextUrl: rebase(a.lastVisited.nextUrl) };
+    return { ...a, url: rebase(a.url), coverUrl: rebase(a.coverUrl), lastVisited: lv, watched };
   },
 
   // touch=false keeps the "last activity" date (used for favorites/filters edits)
@@ -77,7 +95,7 @@ const VA = {
     for (const [k, a] of Object.entries(local)) {
       if (!k.startsWith("anime:") || synced[VA.syncKey(a.slug)]) continue;
       // Local only: either sync failed (keep it), or it was deleted on another computer.
-      if (a.unsynced) out.push(a);
+      if (a.unsynced) out.push(VA.rebaseLocal(a));
       else stale.push(k);
     }
     if (stale.length) chrome.storage.local.remove(stale);
@@ -114,7 +132,7 @@ const VA = {
     return p;
 
     function path(u) {
-      return u ? u.replace(ORIGIN, "") : "";
+      return u ? rebase(u).replace(ORIGIN, "") : "";
     }
   },
 
@@ -125,14 +143,14 @@ const VA = {
     (p.w ? p.w.split(",") : []).forEach((item) => {
       const [n, t] = item.split(":");
       const extra = (local.watched || {})[n] || {};
-      watched[n] = { url: extra.url || null, nextUrl: extra.nextUrl || null, at: parseInt(t, 36) * 1000 };
+      watched[n] = { url: rebase(extra.url) || null, nextUrl: rebase(extra.nextUrl) || null, at: parseInt(t, 36) * 1000 };
     });
     return {
       slug,
       title: p.t || local.title || slug,
       url: ORIGIN + "/anime/" + slug + "/",
       cover: local.cover || "",
-      coverUrl: local.coverUrl || "",
+      coverUrl: rebase(local.coverUrl) || "",
       lang: p.l || local.lang || "",
       finished: !!p.f,
       favorite: !!p.v,

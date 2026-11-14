@@ -1,6 +1,6 @@
 # VA Tracker
 
-Extension Chrome perso qui garde le fil des épisodes d'anime regardés sur voir-anime.to.
+Extension Chrome perso qui garde le fil des épisodes d'anime regardés sur voiranime.cx.
 
 ## Installer sur un PC
 
